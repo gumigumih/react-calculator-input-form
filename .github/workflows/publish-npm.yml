@@ -81,13 +81,34 @@ jobs:
           tag_name: v${{ steps.verify-version.outputs.version }}
           release_name: Release v${{ steps.verify-version.outputs.version }}
           body: |
-            ## What's Changed
-            - Automated release from main branch
-            - Package published to npm
+            ## 🚀 What's New in v${{ steps.verify-version.outputs.version }}
 
-            ## Installation
+            ### 📦 Package Published
+            - **Package**: `@gumigumih/react-calculator-input-form`
+            - **Version**: `${{ steps.verify-version.outputs.version }}`
+            - **Registry**: npm
+
+            ### 🔧 Installation
             ```bash
             npm install @gumigumih/react-calculator-input-form
             ```
+
+            ```bash
+            yarn add @gumigumih/react-calculator-input-form
+            ```
+
+            ```bash
+            pnpm add @gumigumih/react-calculator-input-form
+            ```
+
+            ### 📚 Documentation
+            - **Homepage**: https://gumigumih.github.io/react-calculator-input-form/
+            - **GitHub**: https://github.com/gumigumih/react-calculator-input-form
+
+            ### 🔍 Changes
+            For detailed changes, please check the commit history and pull requests.
+
+            ---
+            *This release was automatically generated from the main branch.*
           draft: false
           prerelease: false

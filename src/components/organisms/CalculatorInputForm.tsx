@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { NumericFormat } from 'react-number-format';
 import { Calculator } from './Calculator';
 
-export interface CalculatorInputProps {
+export interface CalculatorInputFormProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -16,7 +16,7 @@ export interface CalculatorInputProps {
   displayPlaceholder?: string; // 電卓モーダル内のプレースホルダー
 }
 
-export const CalculatorInput = ({
+export const CalculatorInputForm = ({
   value,
   onChange,
   placeholder = 'クリックして金額を入力',
@@ -27,7 +27,7 @@ export const CalculatorInput = ({
   decimalPlaces = 6,
   numberFormatOptions = {},
   displayPlaceholder,
-}: CalculatorInputProps) => {
+}: CalculatorInputFormProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 

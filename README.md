@@ -20,6 +20,7 @@
 - ⌨️ **キーボードショートカット対応**
 - 🔧 **TypeScript対応**
 - ⚙️ **カスタマイズ可能なオプション設定**
+- 🎨 **スタイルの自動読み込み**（別途CSSファイルの読み込み不要）
 
 ## 🚀 インストール
 
@@ -40,15 +41,14 @@ pnpm add @gumigumih/react-calculator-input-form
 ### 最も簡単な使用方法（推奨）
 
 ```tsx
-import { CalculatorInput } from '@gumigumih/react-calculator-input-form';
-import '@gumigumih/react-calculator-input-form/styles';
+import { CalculatorInputForm } from '@gumigumih/react-calculator-input-form';
 
 function App() {
   const [amount, setAmount] = useState('');
 
   return (
     <div>
-      <CalculatorInput
+      <CalculatorInputForm
         value={amount}
         onChange={setAmount}
         title="金額入力"
@@ -96,10 +96,10 @@ function App() {
 
 ## ⚙️ オプション設定
 
-### CalculatorInput オプション
+### CalculatorInputForm オプション
 
 ```tsx
-<CalculatorInput
+<CalculatorInputForm
   value={amount}
   onChange={setAmount}
   // 税計算の有効/無効
@@ -158,7 +158,7 @@ function App() {
 
 ```tsx
 // 日本円フォーマット
-<CalculatorInput
+<CalculatorInputForm
   value={amount}
   onChange={setAmount}
   numberFormatOptions={{
@@ -170,7 +170,7 @@ function App() {
 />
 
 // ドルフォーマット
-<CalculatorInput
+<CalculatorInputForm
   value={amount}
   onChange={setAmount}
   numberFormatOptions={{
@@ -183,7 +183,7 @@ function App() {
 />
 
 // パーセントフォーマット
-<CalculatorInput
+<CalculatorInputForm
   value={amount}
   onChange={setAmount}
   numberFormatOptions={{
@@ -200,7 +200,7 @@ react-number-formatの**すべてのプロパティ**が利用可能です。詳
 
 ## 📋 Props
 
-### CalculatorInput Props
+### CalculatorInputForm Props
 
 | プロパティ | 型 | 必須 | デフォルト | 説明 |
 |------------|----|------|------------|------|

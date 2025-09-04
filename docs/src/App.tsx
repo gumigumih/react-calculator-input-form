@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CalculatorInput } from '@gumigumih/react-calculator-input-form';
+import { CalculatorInputForm } from '@gumigumih/react-calculator-input-form';
 import {
   FiDownload,
   FiBookOpen,
@@ -230,8 +230,7 @@ pnpm add @gumigumih/react-calculator-input-form`}</pre>
         <div>
           <h3 className="font-semibold text-gray-900 mb-3 text-lg">1. インポート</h3>
           <div className="bg-gray-900 text-green-400 p-6 rounded-xl text-sm font-mono overflow-x-auto shadow-inner">
-            <pre>{`import { CalculatorInput } from '@gumigumih/react-calculator-input-form';
-import '@gumigumih/react-calculator-input-form/styles';`}</pre>
+            <pre>{`import { CalculatorInputForm } from '@gumigumih/react-calculator-input-form';`}</pre>
           </div>
         </div>
         <div>
@@ -241,7 +240,7 @@ import '@gumigumih/react-calculator-input-form/styles';`}</pre>
 const [amount, setAmount] = useState('');
         
 return (
-  <CalculatorInput
+  <CalculatorInputForm
     value={amount}
     onChange={setAmount}
   />
@@ -279,7 +278,7 @@ return (
                 <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                 <span>デモ</span>
               </h4>
-              <CalculatorInput value={amount1} onChange={setAmount1}
+              <CalculatorInputForm value={amount1} onChange={setAmount1}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-all duration-200 hover:border-gray-400" />
               {amount1 && (
               <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 mt-3">
@@ -295,7 +294,7 @@ return (
                 <span>コード</span>
               </h4>
               <div className="bg-gray-900 text-green-400 p-4 rounded-xl text-sm font-mono overflow-x-auto shadow-inner">
-                <pre>{`<CalculatorInput
+                <pre>{`<CalculatorInputForm
 value={amount1}
 onChange={setAmount1}
 />`}</pre>
@@ -318,7 +317,7 @@ onChange={setAmount1}
                 <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                 <span>デモ</span>
               </h4>
-              <CalculatorInput value={amount2} onChange={setAmount2} title="料金入力" description="サービス料金を入力してください"
+              <CalculatorInputForm value={amount2} onChange={setAmount2} title="料金入力" description="サービス料金を入力してください"
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-all duration-200 hover:border-gray-400"
                 placeholder="料金をクリックして入力" />
               {amount2 && (
@@ -335,7 +334,7 @@ onChange={setAmount1}
                 <span>コード</span>
               </h4>
               <div className="bg-gray-900 text-green-400 p-4 rounded-xl text-sm font-mono overflow-x-auto shadow-inner">
-                <pre>{`<CalculatorInput
+                <pre>{`<CalculatorInputForm
 value={amount2}
 onChange={setAmount2}
 title="料金入力"
@@ -361,7 +360,7 @@ placeholder="料金をクリックして入力"
                 <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                 <span>デモ</span>
               </h4>
-              <CalculatorInput value={amount3} onChange={setAmount3} decimalPlaces={2}
+              <CalculatorInputForm value={amount3} onChange={setAmount3} decimalPlaces={2}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-all duration-200 hover:border-gray-400" />
               {amount3 && (
               <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200 mt-3">
@@ -377,7 +376,7 @@ placeholder="料金をクリックして入力"
                 <span>コード</span>
               </h4>
               <div className="bg-gray-900 text-green-400 p-4 rounded-xl text-sm font-mono overflow-x-auto shadow-inner">
-                <pre>{`<CalculatorInput
+                <pre>{`<CalculatorInputForm
 value={amount3}
 onChange={setAmount3}
 decimalPlaces={2}
@@ -401,7 +400,7 @@ decimalPlaces={2}
                 <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                 <span>デモ</span>
               </h4>
-              <CalculatorInput value={amount4} onChange={setAmount4} enableTaxCalculation={true}
+              <CalculatorInputForm value={amount4} onChange={setAmount4} enableTaxCalculation={true}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-all duration-200 hover:border-gray-400" />
               {amount4 && (
               <div className="p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl border border-orange-200 mt-3">
@@ -417,7 +416,7 @@ decimalPlaces={2}
                 <span>コード</span>
               </h4>
               <div className="bg-gray-900 text-green-400 p-4 rounded-xl text-sm font-mono overflow-x-auto shadow-inner">
-                <pre>{`<CalculatorInput
+                <pre>{`<CalculatorInputForm
 value={amount4}
 onChange={setAmount4}
 enableTaxCalculation={true}
@@ -441,7 +440,7 @@ enableTaxCalculation={true}
                 <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                 <span>デモ</span>
               </h4>
-              <CalculatorInput value={amount5} onChange={setAmount5} decimalPlaces={0} numberFormatOptions={{
+              <CalculatorInputForm value={amount5} onChange={setAmount5} decimalPlaces={0} numberFormatOptions={{
                       prefix: "¥",
                       thousandSeparator: true,
                       decimalScale: 0
@@ -461,7 +460,7 @@ enableTaxCalculation={true}
                 <span>コード</span>
               </h4>
               <div className="bg-gray-900 text-green-400 p-4 rounded-xl text-sm font-mono overflow-x-auto shadow-inner">
-                <pre>{`<CalculatorInput
+                <pre>{`<CalculatorInputForm
 value={amount5}
 onChange={setAmount5}
 decimalPlaces={0}
@@ -517,7 +516,7 @@ numberFormatOptions={{
     <div className="mb-8">
       <div className="bg-gray-900 text-green-400 p-4 rounded-xl text-sm font-mono overflow-x-auto shadow-inner">
         <pre>{`// 利用可能なオプション例
-<CalculatorInput
+<CalculatorInputForm
 value={amount}
 onChange={setAmount}
 // 基本オプション

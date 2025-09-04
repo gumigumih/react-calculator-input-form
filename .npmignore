@@ -28,11 +28,6 @@ __tests__/
 *.spec.ts
 *.spec.tsx
 
-# ドキュメント
-CHANGELOG.md
-README.md
-LICENSE
-
 # その他
 .cache/
 dist/

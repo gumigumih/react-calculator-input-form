@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { CalculatorInput } from '../CalculatorInput';
+import { CalculatorInputForm } from '../CalculatorInputForm';
 
 // Mock the Calculator component
 jest.mock('../Calculator', () => ({
@@ -15,7 +15,7 @@ jest.mock('../Calculator', () => ({
   },
 }));
 
-describe('CalculatorInput', () => {
+describe('CalculatorInputForm', () => {
   const defaultProps = {
     value: '',
     onChange: jest.fn(),
@@ -26,22 +26,22 @@ describe('CalculatorInput', () => {
   });
 
   it('renders input field with placeholder', () => {
-    render(<CalculatorInput {...defaultProps} />);
+    render(<CalculatorInputForm {...defaultProps} />);
     expect(screen.getByPlaceholderText('クリックして金額を入力')).toBeInTheDocument();
   });
 
   it('renders with custom placeholder', () => {
-    render(<CalculatorInput {...defaultProps} placeholder="Custom placeholder" />);
+    render(<CalculatorInputForm {...defaultProps} placeholder="Custom placeholder" />);
     expect(screen.getByPlaceholderText('Custom placeholder')).toBeInTheDocument();
   });
 
   it('displays current value', () => {
-    render(<CalculatorInput {...defaultProps} value="1234" />);
+    render(<CalculatorInputForm {...defaultProps} value="1234" />);
     expect(screen.getByDisplayValue('1234')).toBeInTheDocument();
   });
 
   it('opens calculator modal when clicked', () => {
-    render(<CalculatorInput {...defaultProps} />);
+    render(<CalculatorInputForm {...defaultProps} />);
     
     const input = screen.getByPlaceholderText('クリックして金額を入力');
     fireEvent.click(input);
@@ -50,7 +50,7 @@ describe('CalculatorInput', () => {
   });
 
   it('calls onChange when calculator returns value', () => {
-    render(<CalculatorInput {...defaultProps} />);
+    render(<CalculatorInputForm {...defaultProps} />);
     
     const input = screen.getByPlaceholderText('クリックして金額を入力');
     fireEvent.click(input);
@@ -62,7 +62,7 @@ describe('CalculatorInput', () => {
   });
 
   it('closes modal when calculator calls onClose', () => {
-    render(<CalculatorInput {...defaultProps} />);
+    render(<CalculatorInputForm {...defaultProps} />);
     
     const input = screen.getByPlaceholderText('クリックして金額を入力');
     fireEvent.click(input);
@@ -76,7 +76,7 @@ describe('CalculatorInput', () => {
   });
 
   it('applies custom className', () => {
-    render(<CalculatorInput {...defaultProps} className="custom-input" />);
+    render(<CalculatorInputForm {...defaultProps} className="custom-input" />);
     const input = screen.getByPlaceholderText('クリックして金額を入力');
     expect(input).toHaveClass('custom-input');
   });
