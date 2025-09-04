@@ -28,9 +28,12 @@ export default {
       declarationDir: './dist',
     }),
     postcss({
-      extract: true,
-      minimize: true,
-      sourceMap: true,
+      extract: false,        // CSSをJavaScript内にインライン化
+      inject: true,          // スタイルを自動的にDOMに注入
+      minimize: true,        // CSSを圧縮
+      sourceMap: true,       // ソースマップ生成
+      modules: false,        // CSSモジュールは無効
+      autoModules: false,    // 自動モジュール化は無効
     }),
   ],
   external: ['react', 'react-dom'],
