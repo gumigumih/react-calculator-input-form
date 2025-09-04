@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { NumericFormat } from 'react-number-format';
 import { Calculator } from './Calculator';
 

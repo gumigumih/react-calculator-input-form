@@ -19,14 +19,7 @@ export interface CalculatorProps {
   placeholder?: string; // 電卓モーダル内のプレースホルダー
 }
 
-function formatNumber(value: string) {
-  if (!value) return '';
-  const parts = value.split('.')
-  const integerPart = parts[0].replace(/,/g, '')
-  const decimalPart = parts[1]
-  const formattedInt = integerPart ? Number(integerPart).toLocaleString() : '0'
-  return decimalPart !== undefined ? `${formattedInt}.${decimalPart}` : formattedInt
-}
+// formatNumber function removed - not used
 
 function normalizeNumberString(num: number, maxFractionDigits: number = 6) {
   if (!isFinite(num)) return '0'
@@ -57,7 +50,7 @@ export const Calculator = ({
   enableTaxCalculation = false,
   decimalPlaces = 6,
   numberFormatOptions = {},
-  placeholder,
+  // placeholder removed - not used
 }: CalculatorProps) => {
   const [input, setInput] = useState(initialValue || '');
   const [error, setError] = useState('');
