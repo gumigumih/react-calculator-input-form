@@ -54,7 +54,10 @@
   "bugs": {
     "url": "https://github.com/gumigumih/react-calculator-input-form/issues"
   },
-  "homepage": "https://github.com/gumigumih/react-calculator-input-form#readme",
+  "homepage": "https://gumigumih.github.io/react-calculator-input-form/",
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"

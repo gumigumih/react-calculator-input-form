@@ -6,6 +6,7 @@ import { fileURLToPath, URL } from 'url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
+  base: '/react-calculator-input-form/',
   plugins: [react()],
   resolve: {
     alias: [
