@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NumericFormat } from 'react-number-format';
 import { Calculator } from './Calculator';
 
@@ -29,11 +29,23 @@ export const CalculatorInput = ({
   displayPlaceholder,
 }: CalculatorInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // DOM要素の存在確認
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   const handleCalculate = (val: string) => {
     onChange(val);
     setIsOpen(false);
   };
+
+  // マウント前は何も表示しない
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <>

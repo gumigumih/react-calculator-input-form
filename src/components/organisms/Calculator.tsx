@@ -54,7 +54,14 @@ export const Calculator = ({
 }: CalculatorProps) => {
   const [input, setInput] = useState(initialValue || '');
   const [error, setError] = useState('');
+  const [mounted, setMounted] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
+
+  // DOM要素の存在確認
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -165,7 +172,7 @@ export const Calculator = ({
     setError('');
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const modal = (
     <div className="calculator-overlay">
@@ -212,5 +219,10 @@ export const Calculator = ({
     </div>
   );
 
-  return createPortal(modal, document.body);
+  // DOM要素の存在確認を行ってからポータルを作成
+  if (typeof document !== 'undefined' && document.body) {
+    return createPortal(modal, document.body);
+  }
+  
+  return null;
 }; 

@@ -1,6 +1,6 @@
 {
   "name": "@gumigumih/react-calculator-input-form",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React電卓入力フォームプラグイン - 税込税抜計算機能付き",
   "type": "module",
   "main": "dist/index.js",
