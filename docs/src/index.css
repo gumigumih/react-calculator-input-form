@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* Basic demo styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* スムーズスクロール */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ページ内リンクのオフセット調整（ヘッダーとstickyナビゲーションの高さ分） */
+#features,
+#installation,
+#usage,
+#demo,
+#options {
+  scroll-margin-top: 160px;
+}

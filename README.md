@@ -1,39 +1,47 @@
-# Calculator Input Form
+# 🧮 React Calculator Input Form Plugin
 
 [![npm version](https://badge.fury.io/js/@gumigumih/react-calculator-input-form.svg)](https://badge.fury.io/js/@gumigumih/react-calculator-input-form)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18+-blue.svg)](https://reactjs.org/)
+[![Plugin](https://img.shields.io/badge/Plugin-React-blue.svg)](https://reactjs.org/)
 
-React電卓入力フォームプラグイン - 税込税抜計算機能付き
+> **React専用電卓入力フォームプラグイン** - 税込税抜計算機能付きで、あらゆる金額入力シーンに対応！
 
-## 機能
+## ✨ 特徴
 
-- 基本的な電卓機能（四則演算）
-- 税込計算（8%、10%）
-- 税抜計算（8%、10%）
-- 小数点以下対応
-- 3桁区切り表示
-- キーボードショートカット対応
-- TypeScript対応
-- カスタマイズ可能なオプション設定
+- ⚛️ **React専用プラグイン**（React 18+完全対応）
+- 🧮 **基本的な電卓機能**（四則演算）
+- 💰 **税込計算**（8%、10%）
+- 📊 **税抜計算**（8%、10%）
+- 🔢 **小数点以下対応**
+- 📈 **3桁区切り表示**
+- 🔗 **react-number-format完全対応**（通貨記号、カスタムフォーマット等）
+- ⌨️ **キーボードショートカット対応**
+- 🔧 **TypeScript対応**
+- ⚙️ **カスタマイズ可能なオプション設定**
 
-## インストール
+## 🚀 インストール
 
 ```bash
 npm install @gumigumih/react-calculator-input-form
-# または
+```
+
+```bash
 yarn add @gumigumih/react-calculator-input-form
-# または
+```
+
+```bash
 pnpm add @gumigumih/react-calculator-input-form
 ```
 
-## クイックスタート
+## 🎯 クイックスタート
 
-### 簡単な使用方法（推奨）
+### 最も簡単な使用方法（推奨）
 
 ```tsx
 import { CalculatorInput } from '@gumigumih/react-calculator-input-form';
-import '@gumigumih/react-calculator-input-form/styles'; // CSSスタイルを読み込み
+import '@gumigumih/react-calculator-input-form/styles';
 
 function App() {
   const [amount, setAmount] = useState('');
@@ -86,7 +94,7 @@ function App() {
 }
 ```
 
-## オプション設定
+## ⚙️ オプション設定
 
 ### CalculatorInput オプション
 
@@ -103,7 +111,9 @@ function App() {
     thousandSeparator: true,    // 3桁区切り
     allowNegative: false,       // 負の値を許可
     allowLeadingZeros: false,   // 先頭の0を許可
-    decimalScale: 2             // 小数点以下の最大桁数
+    decimalScale: 2,            // 小数点以下の最大桁数
+    prefix: "¥",                // 通貨記号（前）
+    suffix: ""                  // 通貨記号（後）
   }}
 />
 ```
@@ -124,12 +134,71 @@ function App() {
     thousandSeparator: true,
     allowNegative: false,
     allowLeadingZeros: false,
-    decimalScale: 2
+    decimalScale: 2,
+    prefix: "¥",
+    suffix: ""
   }}
 />
 ```
 
-## Props
+## 🔗 react-number-format対応
+
+このプラグインは**react-number-format**ライブラリと完全に統合されており、豊富な数値フォーマット機能を提供します。
+
+### 主要なフォーマット機能
+
+- **通貨記号**: `prefix: "¥"`, `suffix: "$"` など
+- **3桁区切り**: `thousandSeparator: true`
+- **小数点制御**: `decimalScale: 2`, `allowDecimal: true`
+- **負の値制御**: `allowNegative: true/false`
+- **先頭ゼロ制御**: `allowLeadingZeros: true/false`
+- **カスタム区切り文字**: `thousandSeparator: ","`, `decimalSeparator: "."`
+
+### 使用例
+
+```tsx
+// 日本円フォーマット
+<CalculatorInput
+  value={amount}
+  onChange={setAmount}
+  numberFormatOptions={{
+    prefix: "¥",
+    thousandSeparator: true,
+    decimalScale: 0,
+    allowNegative: false
+  }}
+/>
+
+// ドルフォーマット
+<CalculatorInput
+  value={amount}
+  onChange={setAmount}
+  numberFormatOptions={{
+    prefix: "$",
+    thousandSeparator: ",",
+    decimalSeparator: ".",
+    decimalScale: 2,
+    suffix: " USD"
+  }}
+/>
+
+// パーセントフォーマット
+<CalculatorInput
+  value={amount}
+  onChange={setAmount}
+  numberFormatOptions={{
+    suffix: "%",
+    decimalScale: 2,
+    allowNegative: false
+  }}
+/>
+```
+
+### 利用可能な全オプション
+
+react-number-formatの**すべてのプロパティ**が利用可能です。詳細は[公式ドキュメント](https://www.npmjs.com/package/react-number-format)をご覧ください。
+
+## 📋 Props
 
 ### CalculatorInput Props
 
@@ -159,7 +228,7 @@ function App() {
 | `decimalPlaces` | number | | 6 | 小数点以下の最大桁数 |
 | `numberFormatOptions` | object | | {} | 数値フォーマットの詳細設定（react-number-formatの全オプションが利用可能） |
 
-## キーボードショートカット
+## ⌨️ キーボードショートカット
 
 - `0-9`: 数字入力
 - `+`, `-`, `*`, `/`: 演算子
@@ -169,7 +238,23 @@ function App() {
 - `Backspace`: バックスペース
 - `.`: 小数点入力
 
-## 開発
+## 🎨 デモ
+
+実際の動作を確認したい場合は、以下のドキュメントページをご覧ください：
+
+```bash
+# ルートディレクトリから
+npm run docs:dev
+
+# または、docsディレクトリ内で
+cd docs
+npm install
+npm run dev
+```
+
+📚 **[詳細なドキュメントとデモはこちら](./docs/)**
+
+## 🛠️ 開発
 
 ```bash
 # 依存関係のインストール
@@ -182,15 +267,14 @@ npm run dev
 npm run build
 ```
 
-## サンプル
+## 📄 ライセンス
 
-### プラグインデモ
-```bash
-cd examples/plugin-demo
-npm install
-npm run dev
-```
+MIT License - 詳細は [LICENSE](LICENSE) ファイルをご覧ください。
 
-## ライセンス
+## 🤝 コントリビューション
 
-MIT
+バグ報告や機能要望、プルリクエストを歓迎します！
+
+---
+
+**Made with ❤️ by [gumigumih](https://github.com/gumigumih)**

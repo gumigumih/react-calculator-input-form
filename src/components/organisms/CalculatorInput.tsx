@@ -23,7 +23,7 @@ export const CalculatorInput = ({
   className,
   title,
   description,
-  enableTaxCalculation = true,
+  enableTaxCalculation = false,
   decimalPlaces = 6,
   numberFormatOptions = {},
   displayPlaceholder,

@@ -54,7 +54,7 @@ export const Calculator = ({
   initialValue = '',
   title,
   description,
-  enableTaxCalculation = true,
+  enableTaxCalculation = false,
   decimalPlaces = 6,
   numberFormatOptions = {},
   placeholder,
