@@ -53,6 +53,7 @@ jobs:
         run: |
           PACKAGE_NAME=$(node -p "require('./package.json').name")
           LOCAL_VERSION=$(node -p "require('./package.json').version")
+          echo "version=$LOCAL_VERSION" >> $GITHUB_OUTPUT
           set +e
           PUBLISHED_VERSION=$(npm view "$PACKAGE_NAME" version 2>/dev/null)
           STATUS=$?
@@ -73,7 +74,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create Release
-        uses: actions/create-release@v2
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
