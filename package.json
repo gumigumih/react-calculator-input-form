@@ -29,18 +29,15 @@
     "test:coverage": "jest --coverage",
     "lint": "eslint src --ext .ts,.tsx",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "prepublishOnly": "npm run build",
-    "prepack": "npm run build",
     "clean": "rm -rf dist",
-    "prebuild": "npm run clean",
     "docs:dev": "cd docs && npm run dev",
     "docs:build": "cd docs && npm run build",
     "docs:preview": "cd docs && npm run preview",
-    "docs:build:check": "[ -d docs/dist ] && [ \"$(ls -A docs/dist | wc -l)\" -gt 0 ] || (echo 'docs/dist is missing or empty' && exit 1)",
-    "verify:dist": "[ -d dist ] && [ \"$(ls -A dist | wc -l)\" -gt 0 ] || (echo 'dist is missing or empty' && exit 1)",
-    "verify:version": "node -e \"const pkg=require('./package.json'); const {execSync}=require('child_process'); try{const published=execSync('npm view '+pkg.name+' version',{encoding:'utf8'}).trim(); if(published===pkg.version){console.error('Version '+pkg.version+' already published. Bump version.'); process.exit(1);} console.log('local='+pkg.version+' published='+published);}catch(e){console.log('No published version.');}\"",
-    "verify:tag": "node -e \"const pkg=require('./package.json'); const {execSync}=require('child_process'); try{execSync('git fetch --tags --quiet',{stdio:'ignore'}); execSync('git rev-parse -q --verify refs/tags/v'+pkg.version,{stdio:'ignore'}); console.error('Git tag v'+pkg.version+' exists.'); process.exit(1);}catch(e){}\"",
-    "prepare": "husky"
+    "docs:build:check": "node scripts/verify.js docs-dist",
+    "verify:dist": "node scripts/verify.js dist",
+    "verify:version": "node scripts/verify.js version",
+    "verify:tag": "node scripts/verify.js tag",
+    "workflow:check": "npm run typecheck && npm run lint && npm test && npm run build && npm run docs:build && npm run verify:dist && npm run docs:build:check && npm run verify:version && npm run verify:tag && npm pack --dry-run"
   },
   "keywords": [
     "react",

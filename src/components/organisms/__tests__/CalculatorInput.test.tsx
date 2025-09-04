@@ -3,7 +3,7 @@ import { CalculatorInput } from '../CalculatorInput';
 
 // Mock the Calculator component
 jest.mock('../Calculator', () => ({
-  Calculator: ({ isOpen, onClose, onCalculate, initialValue }: any) => {
+  Calculator: ({ isOpen, onClose, onCalculate }: any) => {
     if (!isOpen) return null;
     return (
       <div data-testid="calculator-modal">
