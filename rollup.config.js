@@ -3,6 +3,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
+import copy from 'rollup-plugin-copy';
 
 export default {
   input: 'src/index.ts',
@@ -34,6 +35,11 @@ export default {
       sourceMap: true,       // ソースマップ生成
       modules: false,        // CSSモジュールは無効
       autoModules: false,    // 自動モジュール化は無効
+    }),
+    copy({
+      targets: [
+        { src: 'src/styles', dest: 'dist' }
+      ]
     }),
   ],
   external: ['react', 'react-dom'],

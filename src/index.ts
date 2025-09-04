@@ -1,4 +1,4 @@
-// Import styles
+// Import styles automatically
 import './styles/calculator.css';
 
 // Atoms
