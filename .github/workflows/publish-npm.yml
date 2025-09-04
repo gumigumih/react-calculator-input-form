@@ -68,6 +68,108 @@ jobs:
           fi
           echo "Version bump detected. Proceeding to publish."
 
+      - name: Get commit messages
+        id: get-commits
+        shell: bash
+        run: |
+          # 前回のリリースタグを取得
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          LOCAL_VERSION=$(node -p "require('./package.json').version")
+
+          # 前回のリリースタグを取得（存在しない場合は初期コミットから）
+          set +e
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
+          if [ $? -ne 0 ]; then
+            # タグが存在しない場合、最初のコミットから
+            PREVIOUS_COMMIT=$(git rev-list --max-parents=0 HEAD | head -1)
+            COMMIT_RANGE="$PREVIOUS_COMMIT..HEAD"
+          else
+            # 前回のタグから現在まで
+            COMMIT_RANGE="$PREVIOUS_TAG..HEAD"
+          fi
+          set -e
+
+          # コミットメッセージを分類して取得（空の場合は空文字列を設定）
+          FEATURES=$(git log --pretty=format:"- %s" $COMMIT_RANGE --no-merges | grep -E "^(feat|feature)" || echo "")
+          FIXES=$(git log --pretty=format:"- %s" $COMMIT_RANGE --no-merges | grep -E "^(fix|bugfix)" || echo "")
+          DOCS=$(git log --pretty=format:"- %s" $COMMIT_RANGE --no-merges | grep -E "^(docs|documentation)" || echo "")
+          STYLE=$(git log --pretty=format:"- %s" $COMMIT_RANGE --no-merges | grep -E "^(style|format)" || echo "")
+          REFACTOR=$(git log --pretty=format:"- %s" $COMMIT_RANGE --no-merges | grep -E "^(refactor|refactoring)" || echo "")
+          TEST=$(git log --pretty=format:"- %s" $COMMIT_RANGE --no-merges | grep -E "^(test|testing)" || echo "")
+          CHORE=$(git log --pretty=format:"- %s" $COMMIT_RANGE --no-merges | grep -E "^(chore|maintenance)" || echo "")
+          OTHER=$(git log --pretty=format:"- %s" $COMMIT_RANGE --no-merges | grep -vE "^(feat|feature|fix|bugfix|docs|documentation|style|format|refactor|refactoring|test|testing|chore|maintenance)" || echo "")
+
+          # コミット数をカウント
+          COMMIT_COUNT=$(git rev-list --count $COMMIT_RANGE)
+
+          # 分類されたコミットメッセージを出力（空の場合は空文字列を設定）
+          if [ -n "$FEATURES" ]; then
+            echo "features<<EOF" >> $GITHUB_OUTPUT
+            echo "$FEATURES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "features=" >> $GITHUB_OUTPUT
+          fi
+
+          if [ -n "$FIXES" ]; then
+            echo "fixes<<EOF" >> $GITHUB_OUTPUT
+            echo "$FIXES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "fixes=" >> $GITHUB_OUTPUT
+          fi
+
+          if [ -n "$DOCS" ]; then
+            echo "docs<<EOF" >> $GITHUB_OUTPUT
+            echo "$DOCS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "docs=" >> $GITHUB_OUTPUT
+          fi
+
+          if [ -n "$STYLE" ]; then
+            echo "style<<EOF" >> $GITHUB_OUTPUT
+            echo "$STYLE" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "style=" >> $GITHUB_OUTPUT
+          fi
+
+          if [ -n "$REFACTOR" ]; then
+            echo "refactor<<EOF" >> $GITHUB_OUTPUT
+            echo "$REFACTOR" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "refactor=" >> $GITHUB_OUTPUT
+          fi
+
+          if [ -n "$TEST" ]; then
+            echo "test<<EOF" >> $GITHUB_OUTPUT
+            echo "$TEST" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "test=" >> $GITHUB_OUTPUT
+          fi
+
+          if [ -n "$CHORE" ]; then
+            echo "chore<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHORE" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "chore=" >> $GITHUB_OUTPUT
+          fi
+
+          if [ -n "$OTHER" ]; then
+            echo "other<<EOF" >> $GITHUB_OUTPUT
+            echo "$OTHER" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "other=" >> $GITHUB_OUTPUT
+          fi
+
+          echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+
       - name: Publish to npm
         run: npm publish
         env:
@@ -105,10 +207,33 @@ jobs:
             - **Homepage**: https://gumigumih.github.io/react-calculator-input-form/
             - **GitHub**: https://github.com/gumigumih/react-calculator-input-form
 
-            ### 🔍 Changes
-            For detailed changes, please check the commit history and pull requests.
+            ### 🔍 Changes (${{ steps.get-commits.outputs.commit_count }} commits)
+
+            ${{ steps.get-commits.outputs.features != '' && '#### 🚀 New Features' || '' }}
+            ${{ steps.get-commits.outputs.features }}
+
+            ${{ steps.get-commits.outputs.fixes != '' && '#### 🐛 Bug Fixes' || '' }}
+            ${{ steps.get-commits.outputs.fixes }}
+
+            ${{ steps.get-commits.outputs.docs != '' && '#### 📚 Documentation' || '' }}
+            ${{ steps.get-commits.outputs.docs }}
+
+            ${{ steps.get-commits.outputs.style != '' && '#### 🎨 Style Changes' || '' }}
+            ${{ steps.get-commits.outputs.style }}
+
+            ${{ steps.get-commits.outputs.refactor != '' && '#### 🔧 Refactoring' || '' }}
+            ${{ steps.get-commits.outputs.refactor }}
+
+            ${{ steps.get-commits.outputs.test != '' && '#### 🧪 Testing' || '' }}
+            ${{ steps.get-commits.outputs.test }}
+
+            ${{ steps.get-commits.outputs.chore != '' && '#### 🛠️ Maintenance' || '' }}
+            ${{ steps.get-commits.outputs.chore }}
+
+            ${{ steps.get-commits.outputs.other != '' && '#### 📝 Other Changes' || '' }}
+            ${{ steps.get-commits.outputs.other }}
 
             ---
-            *This release was automatically generated from the main branch.*
+            *This release was automatically generated from the main branch with commit history.*
           draft: false
           prerelease: false
