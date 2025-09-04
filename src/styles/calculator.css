@@ -121,16 +121,19 @@
 }
 
 .calculator-close-button {
-  color: #9ca3af;
-  transition: color 0.2s;
   background: none;
   border: none;
+  font-size: 1.25rem;
+  color: #6b7280;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .calculator-close-button:hover {
-  color: #4b5563;
+  background-color: #6b7280;
+  color: white;
 }
 
 /* 参加者セクション */
@@ -343,25 +346,27 @@
 }
 
 /* 税込/税抜の視認性向上 */
-/* 税込=グリーン系（iOSのアクション色に近い） */
+/* 税込=薄い水色系（クールで落ち着いた色） */
 
-/* 薄めのグリーン基調（税込） */
-.calculator-keypad-button.decimal.include {
-  background-color: #bef0d2; /* light green */
+/* 薄い水色基調（税込） */
+.calculator-keypad-button.include {
+  background-color: #a5f3fc; /* cyan-200 */
+  color: #374151; /* 数字ボタンと同じ文字色 */
 }
 
-.calculator-keypad-button.decimal.include:hover {
-  background-color: #d2f0dd;
+.calculator-keypad-button.include:hover {
+  background-color: #67e8f9; /* cyan-300 */
 }
 
-/* 税抜=ブルー系（iOSのリンク/操作色に近い） */
-/* 薄めのブルー基調（税抜） */
-.calculator-keypad-button.decimal.exclude {
-  background-color: #c9dffc; /* light blue */
+/* 税抜=薄い桃色系（温かみのある色） */
+/* 薄い桃色基調（税抜） */
+.calculator-keypad-button.exclude {
+  background-color: #fce7f3; /* pink-200 */
+  color: #374151; /* 数字ボタンと同じ文字色 */
 }
 
-.calculator-keypad-button.decimal.exclude:hover {
-  background-color: #d6e7ff;
+.calculator-keypad-button.exclude:hover {
+  background-color: #fbcfe8; /* pink-300 */
 }
 
 .calculator-action-buttons {
@@ -467,4 +472,8 @@
     padding: 0.75rem;
     font-size: 1.125rem;
   }
+}
+
+.calculator-keypad-button.number.zero-wide {
+  grid-column: span 2;
 }

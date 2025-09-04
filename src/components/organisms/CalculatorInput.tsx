@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { NumericFormat } from 'react-number-format';
 import { Calculator } from './Calculator';
 
 export interface CalculatorInputProps {
@@ -8,15 +9,11 @@ export interface CalculatorInputProps {
   className?: string;
   title?: string;
   description?: string;
-}
-
-function formatNumber(value: string) {
-  if (!value) return '';
-  const parts = value.split('.');
-  const int = parts[0].replace(/,/g, '');
-  const dec = parts[1];
-  const formattedInt = int ? Number(int).toLocaleString() : '0';
-  return dec !== undefined ? `${formattedInt}.${dec}` : formattedInt;
+  // オプション設定
+  enableTaxCalculation?: boolean;
+  decimalPlaces?: number;
+  numberFormatOptions?: any; // react-number-formatの全オプションを受け付け
+  displayPlaceholder?: string; // 電卓モーダル内のプレースホルダー
 }
 
 export const CalculatorInput = ({
@@ -26,25 +23,28 @@ export const CalculatorInput = ({
   className,
   title,
   description,
+  enableTaxCalculation = true,
+  decimalPlaces = 6,
+  numberFormatOptions = {},
+  displayPlaceholder,
 }: CalculatorInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const displayValue = useMemo(() => formatNumber(value), [value]);
-
   const handleCalculate = (val: string) => {
-    onChange(formatNumber(val));
+    onChange(val);
     setIsOpen(false);
   };
 
   return (
     <>
-      <input
-        type="text"
-        value={displayValue}
+      <NumericFormat
+        value={value}
+        onValueChange={(vals) => onChange(vals.value)}
         placeholder={placeholder}
         className={className}
         readOnly
         onClick={() => setIsOpen(true)}
+        {...numberFormatOptions}
       />
       <Calculator
         isOpen={isOpen}
@@ -53,6 +53,10 @@ export const CalculatorInput = ({
         initialValue={value}
         title={title}
         description={description}
+        enableTaxCalculation={enableTaxCalculation}
+        decimalPlaces={decimalPlaces}
+        numberFormatOptions={numberFormatOptions}
+        placeholder={displayPlaceholder}
       />
     </>
   );

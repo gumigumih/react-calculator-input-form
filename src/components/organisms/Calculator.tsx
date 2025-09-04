@@ -12,6 +12,11 @@ export interface CalculatorProps {
   initialValue?: string;
   title?: string;
   description?: string;
+  // オプション設定
+  enableTaxCalculation?: boolean;
+  decimalPlaces?: number;
+  numberFormatOptions?: any; // react-number-formatの全オプションを受け付け
+  placeholder?: string; // 電卓モーダル内のプレースホルダー
 }
 
 function formatNumber(value: string) {
@@ -49,6 +54,10 @@ export const Calculator = ({
   initialValue = '',
   title,
   description,
+  enableTaxCalculation = true,
+  decimalPlaces = 6,
+  numberFormatOptions = {},
+  placeholder,
 }: CalculatorProps) => {
   const [input, setInput] = useState(initialValue || '');
   const [error, setError] = useState('');
@@ -132,6 +141,7 @@ export const Calculator = ({
   };
 
   const handleTaxInclude = (rate: number) => {
+    if (!enableTaxCalculation) return;
     if (!input) {
       setError('金額を入力してください');
       return;
@@ -142,11 +152,12 @@ export const Calculator = ({
       return;
     }
     const taxIncluded = currentValue * (1 + rate);
-    setInput(normalizeNumberString(taxIncluded));
+    setInput(normalizeNumberString(taxIncluded, decimalPlaces));
     setError('');
   };
 
   const handleTaxExclude = (rate: number) => {
+    if (!enableTaxCalculation) return;
     if (!input) {
       setError('金額を入力してください');
       return;
@@ -157,7 +168,7 @@ export const Calculator = ({
       return;
     }
     const taxExcluded = currentValue / (1 + rate);
-    setInput(normalizeNumberString(taxExcluded));
+    setInput(normalizeNumberString(taxExcluded, decimalPlaces));
     setError('');
   };
 
@@ -166,23 +177,33 @@ export const Calculator = ({
   const modal = (
     <div className="calculator-overlay">
       <div className="calculator-modal">
-        <div className="calculator-header">
-          <div>
-            <h2 className="calculator-title">{title || '金額入力'}</h2>
-            <p className="calculator-subtitle">{description || '税込・税抜や小数計算に対応'}</p>
-          </div>
-          <button onClick={onClose} className="calculator-close-button" aria-label="閉じる">
-            <Icon icon={faTimes} />
-          </button>
-        </div>
+                {/* Header */}
+                {title || description ? (
+                  <div className="calculator-header">
+                    <div>
+                      {title && <h2 className="calculator-title">{title}</h2>}
+                      {description && <p className="calculator-subtitle">{description}</p>}
+                    </div>
+                    <button onClick={onClose} className="calculator-close-button" aria-label="閉じる">
+                      <Icon icon={faTimes} className="w-5 h-5" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="calculator-header">
+                    <div></div>
+                    <button onClick={onClose} className="calculator-close-button" aria-label="閉じる">
+                      <Icon icon={faTimes} className="w-5 h-5" />
+                    </button>
+                  </div>
+                )}
         <div className="calculator-display">
           <CalculatorDisplay
             value={input}
             error={error}
             inputRef={inputRef}
             editable
-            placeholder="金額を入力"
             onChange={(v) => setInput(v)}
+            numberFormatOptions={numberFormatOptions}
           />
         </div>
         <CalculatorKeypad
@@ -191,6 +212,8 @@ export const Calculator = ({
           onDecide={handleDecide}
           onTaxInclude={handleTaxInclude}
           onTaxExclude={handleTaxExclude}
+          enableTaxCalculation={enableTaxCalculation}
+          decimalPlaces={decimalPlaces}
         />
       </div>
     </div>
