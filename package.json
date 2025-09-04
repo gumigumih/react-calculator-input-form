@@ -1,0 +1,75 @@
+{
+  "name": "@gumigumih/react-calculator-input-form",
+  "version": "1.0.0",
+  "description": "React電卓入力フォームプラグイン - 税込税抜計算機能付き",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src/styles"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": {
+      "import": "./src/styles/calculator.css",
+      "require": "./src/styles/calculator.css"
+    }
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest",
+    "lint": "eslint src --ext .ts,.tsx",
+    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean"
+  },
+  "keywords": [
+    "react",
+    "calculator",
+    "input-form",
+    "tax",
+    "typescript",
+    "split-calculator",
+    "warimaru",
+    "japanese",
+    "mobile-first"
+  ],
+  "author": "gumigumih",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gumigumih/react-calculator-input-form.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gumigumih/react-calculator-input-form/issues"
+  },
+  "homepage": "https://github.com/gumigumih/react-calculator-input-form#readme",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "dependencies": {
+    "react-number-format": "^5.4.4"
+  },
+  "devDependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.5.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "rollup": "^3.0.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tslib": "^2.6.2",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,200 @@
+import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { Icon } from '../atoms/Icon';
+import { CalculatorDisplay } from '../molecules/CalculatorDisplay';
+import { CalculatorKeypad } from '../molecules/CalculatorKeypad';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
+export interface CalculatorProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onCalculate: (value: string) => void;
+  initialValue?: string;
+  title?: string;
+  description?: string;
+}
+
+function formatNumber(value: string) {
+  if (!value) return '';
+  const parts = value.split('.')
+  const integerPart = parts[0].replace(/,/g, '')
+  const decimalPart = parts[1]
+  const formattedInt = integerPart ? Number(integerPart).toLocaleString() : '0'
+  return decimalPart !== undefined ? `${formattedInt}.${decimalPart}` : formattedInt
+}
+
+function normalizeNumberString(num: number, maxFractionDigits: number = 6) {
+  if (!isFinite(num)) return '0'
+  const fixed = num.toFixed(maxFractionDigits)
+  const trimmed = fixed.replace(/\.0+$/, '').replace(/(\.\d*?)0+$/, '$1')
+  return trimmed
+}
+
+function calculateExpression(expr: string): string {
+  try {
+    const sanitized = expr.replace(/,/g, '').replace(/×/g, '*').replace(/÷/g, '/');
+    // eslint-disable-next-line no-eval
+    const result = eval(sanitized);
+    if (isNaN(result) || !isFinite(result)) return '0';
+    return normalizeNumberString(result);
+  } catch {
+    return '0';
+  }
+}
+
+export const Calculator = ({
+  isOpen,
+  onClose,
+  onCalculate,
+  initialValue = '',
+  title,
+  description,
+}: CalculatorProps) => {
+  const [input, setInput] = useState(initialValue || '');
+  const [error, setError] = useState('');
+  const inputRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setInput(initialValue || '');
+      setError('');
+    }
+  }, [isOpen, initialValue]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+      const activeElement = document.activeElement as HTMLElement | null;
+      if (activeElement && activeElement.tagName === 'INPUT') return;
+      if (e.key >= '0' && e.key <= '9') {
+        handleButtonClick(e.key);
+        e.preventDefault();
+      } else if (e.key === '.') {
+        handleButtonClick('.')
+        e.preventDefault();
+      } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+        handleButtonClick(e.key === '*' ? '×' : e.key === '/' ? '÷' : e.key);
+        e.preventDefault();
+      } else if (e.key === 'Backspace') {
+        handleButtonClick('←');
+        e.preventDefault();
+      } else if (e.key === 'Enter' || e.key === '=') {
+        handleDecide();
+        e.preventDefault();
+      } else if (e.key === 'Escape') {
+        onClose();
+        e.preventDefault();
+      } else if (e.key === 'c' || e.key === 'C') {
+        handleButtonClick('C');
+        e.preventDefault();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, input]);
+
+  const handleButtonClick = (val: string) => {
+    setError('');
+    if (val === 'C') {
+      setInput('');
+    } else if (val === '←') {
+      setInput((prev) => prev.slice(0, -1));
+    } else if (val === '.') {
+      setInput((prev) => {
+        if (!prev) return '0.'
+        const lastSegment = prev.split(/[+\-×÷]/).pop() || ''
+        if (lastSegment.includes('.')) return prev
+        return prev + '.'
+      })
+    } else if (['+', '-', '×', '÷'].includes(val)) {
+      if (!input || /[+\-×÷]$/.test(input)) return;
+      setInput((prev) => prev + val);
+    } else {
+      setInput((prev) => (prev === '0' ? val : prev + val));
+    }
+  };
+
+  const handleEqual = () => {
+    if (!input) return;
+    const result = calculateExpression(input);
+    setInput(result);
+  };
+
+  const handleDecide = () => {
+    if (!input) {
+      setError('金額を入力してください');
+      return;
+    }
+    const result = calculateExpression(input);
+    onCalculate(result);
+    onClose();
+  };
+
+  const handleTaxInclude = (rate: number) => {
+    if (!input) {
+      setError('金額を入力してください');
+      return;
+    }
+    const currentValue = parseFloat(calculateExpression(input));
+    if (isNaN(currentValue)) {
+      setError('有効な金額を入力してください');
+      return;
+    }
+    const taxIncluded = currentValue * (1 + rate);
+    setInput(normalizeNumberString(taxIncluded));
+    setError('');
+  };
+
+  const handleTaxExclude = (rate: number) => {
+    if (!input) {
+      setError('金額を入力してください');
+      return;
+    }
+    const currentValue = parseFloat(calculateExpression(input));
+    if (isNaN(currentValue)) {
+      setError('有効な金額を入力してください');
+      return;
+    }
+    const taxExcluded = currentValue / (1 + rate);
+    setInput(normalizeNumberString(taxExcluded));
+    setError('');
+  };
+
+  if (!isOpen) return null;
+
+  const modal = (
+    <div className="calculator-overlay">
+      <div className="calculator-modal">
+        <div className="calculator-header">
+          <div>
+            <h2 className="calculator-title">{title || '金額入力'}</h2>
+            <p className="calculator-subtitle">{description || '税込・税抜や小数計算に対応'}</p>
+          </div>
+          <button onClick={onClose} className="calculator-close-button" aria-label="閉じる">
+            <Icon icon={faTimes} />
+          </button>
+        </div>
+        <div className="calculator-display">
+          <CalculatorDisplay
+            value={input}
+            error={error}
+            inputRef={inputRef}
+            editable
+            placeholder="金額を入力"
+            onChange={(v) => setInput(v)}
+          />
+        </div>
+        <CalculatorKeypad
+          onButtonClick={handleButtonClick}
+          onEqual={handleEqual}
+          onDecide={handleDecide}
+          onTaxInclude={handleTaxInclude}
+          onTaxExclude={handleTaxExclude}
+        />
+      </div>
+    </div>
+  );
+
+  return createPortal(modal, document.body);
+}; 

@@ -1,0 +1,38 @@
+# 開発用ファイル
+src/
+examples/
+.github/
+.cursor/
+.git/
+.gitignore
+
+# 設定ファイル
+tsconfig.json
+rollup.config.js
+eslint.config.js
+tailwind.config.js
+vite.config.ts
+
+# 依存関係
+node_modules/
+package-lock.json
+
+# 開発用スクリプト
+*.log
+.DS_Store
+
+# テストファイル
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# ドキュメント
+CHANGELOG.md
+README.md
+LICENSE
+
+# その他
+.cache/
+dist/
