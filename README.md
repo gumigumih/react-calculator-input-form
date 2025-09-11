@@ -118,29 +118,6 @@ function App() {
 />
 ```
 
-### Calculator オプション
-
-```tsx
-<Calculator
-  isOpen={isOpen}
-  onClose={() => setIsOpen(false)}
-  onCalculate={handleCalculate}
-  // 税計算の有効/無効
-  enableTaxCalculation={false}
-  // 小数点以下の桁数
-  decimalPlaces={2}
-  // 数値フォーマットオプション
-  numberFormatOptions={{
-    thousandSeparator: true,
-    allowNegative: false,
-    allowLeadingZeros: false,
-    decimalScale: 2,
-    prefix: "¥",
-    suffix: ""
-  }}
-/>
-```
-
 ## 🔗 react-number-format対応
 
 このプラグインは**react-number-format**ライブラリと完全に統合されており、豊富な数値フォーマット機能を提供します。
@@ -200,8 +177,6 @@ react-number-formatの**すべてのプロパティ**が利用可能です。詳
 
 ## 📋 Props
 
-### CalculatorInputForm Props
-
 | プロパティ | 型 | 必須 | デフォルト | 説明 |
 |------------|----|------|------------|------|
 | `value` | string | ✓ | - | 入力値 |
@@ -214,23 +189,8 @@ react-number-formatの**すべてのプロパティ**が利用可能です。詳
 | `decimalPlaces` | number | | 6 | 小数点以下の最大桁数 |
 | `numberFormatOptions` | object | | {} | 数値フォーマットの詳細設定 |
 
-### Calculator Props
-
-| プロパティ | 型 | 必須 | デフォルト | 説明 |
-|------------|----|------|------------|------|
-| `isOpen` | boolean | ✓ | - | 電卓の表示/非表示 |
-| `onClose` | () => void | ✓ | - | 電卓を閉じる時のコールバック |
-| `onCalculate` | (value: string) => void | ✓ | - | 計算完了時のコールバック |
-| `initialValue` | string | | "" | 初期値 |
-| `title` | string | | "金額入力" | モーダルのタイトル |
-| `description` | string | | "税込・税抜や小数計算に対応" | モーダルの説明文 |
-| `enableTaxCalculation` | boolean | | true | 税計算機能の有効/無効 |
-| `decimalPlaces` | number | | 6 | 小数点以下の最大桁数 |
-| `numberFormatOptions` | object | | {} | 数値フォーマットの詳細設定（react-number-formatの全オプションが利用可能） |
-
 ## ⌨️ キーボードショートカット
 
-- `0-9`: 数字入力
 - `+`, `-`, `*`, `/`: 演算子
 - `Enter`, `=`: 計算実行
 - `Escape`: 電卓を閉じる
