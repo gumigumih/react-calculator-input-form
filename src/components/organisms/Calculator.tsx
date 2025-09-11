@@ -50,10 +50,12 @@ export const Calculator = ({
   enableTaxCalculation = false,
   decimalPlaces = 6,
   numberFormatOptions = {},
-  // placeholder removed - not used
+  placeholder,
 }: CalculatorProps) => {
-  const [input, setInput] = useState(initialValue || '');
+  const [expression, setExpression] = useState(initialValue || '');
+  const [displayValue, setDisplayValue] = useState(initialValue || '');
   const [error, setError] = useState('');
+  const [isWaitingForOperand, setIsWaitingForOperand] = useState(false);
   const [mounted, setMounted] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
 
@@ -65,7 +67,9 @@ export const Calculator = ({
 
   useEffect(() => {
     if (isOpen) {
-      setInput(initialValue || '');
+      setExpression(initialValue || '');
+      setDisplayValue(initialValue || '');
+      setIsWaitingForOperand(false);
       setError('');
     }
   }, [isOpen, initialValue]);
@@ -101,74 +105,126 @@ export const Calculator = ({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, input]);
+  }, [isOpen, expression, displayValue]);
+
+  const handleDisplayChange = (newValue: string) => {
+    setError('');
+    setDisplayValue(newValue);
+    if (isWaitingForOperand) {
+      // 演算子入力後の直接入力の場合、式を更新しない
+      // If an operator was just entered, and user types directly,
+      // the new value is the start of the next operand.
+      // Append it to the expression.
+      setExpression(expression + newValue);
+      setIsWaitingForOperand(false); // No longer waiting for operand
+    } else {
+      // 既存の式の最後の数値を置き換える
+      const newExpression = expression.replace(/[\d.]+$/, newValue);
+      setExpression(newExpression);
+    }
+  };
 
   const handleButtonClick = (val: string) => {
     setError('');
     if (val === 'C') {
-      setInput('');
+      setExpression('');
+      setDisplayValue('');
+      setIsWaitingForOperand(false);
     } else if (val === '←') {
-      setInput((prev) => prev.slice(0, -1));
+      if (displayValue.length > 0) {
+        const newDisplayValue = displayValue.slice(0, -1);
+        setDisplayValue(newDisplayValue);
+        setExpression((prev) => prev.slice(0, -1));
+      }
     } else if (val === '.') {
-      setInput((prev) => {
-        if (!prev) return '0.'
-        const lastSegment = prev.split(/[+\-×÷]/).pop() || ''
-        if (lastSegment.includes('.')) return prev
-        return prev + '.'
-      })
+      if (!displayValue.includes('.')) {
+        const newDisplayValue = displayValue ? displayValue + '.' : '0.';
+        setDisplayValue(newDisplayValue);
+        if (isWaitingForOperand) {
+          setExpression(expression + newDisplayValue);
+          setIsWaitingForOperand(false);
+        } else {
+          setExpression(expression + (displayValue ? '.' : '0.'));
+          // Append decimal to the last number in the expression
+          const lastNumberRegex = /([\d.]+)$/;
+          setExpression(expression.replace(lastNumberRegex, (match) => match + '.'));
+        }
+      }
     } else if (['+', '-', '×', '÷'].includes(val)) {
-      if (!input || /[+\-×÷]$/.test(input)) return;
-      setInput((prev) => prev + val);
+      if (expression) {
+        if (/[+\-×÷]$/.test(expression)) {
+          setExpression(expression.slice(0, -1) + val);
+        } else {
+          const result = calculateExpression(expression);
+          setExpression(result + val);
+          setDisplayValue(result);
+        }
+        setIsWaitingForOperand(true);
+      }
     } else {
-      setInput((prev) => (prev === '0' ? val : prev + val));
+      if (isWaitingForOperand) {
+        setDisplayValue(val);
+        setExpression(expression + val);
+        setIsWaitingForOperand(false);
+      } else {
+        const newDisplayValue = displayValue === '0' ? val : displayValue + val;
+        setDisplayValue(newDisplayValue);
+        setExpression(expression === '0' ? val : expression + val);
+      }
     }
   };
 
   const handleEqual = () => {
-    if (!input) return;
-    const result = calculateExpression(input);
-    setInput(result);
+    if (!expression) return;
+    const result = calculateExpression(expression);
+    setExpression(result);
+    setDisplayValue(result);
+    setIsWaitingForOperand(false);
   };
 
   const handleDecide = () => {
-    if (!input) {
+    if (!expression) {
       setError('金額を入力してください');
       return;
     }
-    const result = calculateExpression(input);
+    const result = calculateExpression(expression);
     onCalculate(result);
     onClose();
   };
 
   const handleTaxInclude = (rate: number) => {
     if (!enableTaxCalculation) return;
-    if (!input) {
+    if (!expression) {
       setError('金額を入力してください');
       return;
     }
-    const currentValue = parseFloat(calculateExpression(input));
+    const currentValue = parseFloat(calculateExpression(expression));
     if (isNaN(currentValue)) {
       setError('有効な金額を入力してください');
       return;
     }
     const taxIncluded = currentValue * (1 + rate);
-    setInput(normalizeNumberString(taxIncluded, decimalPlaces));
+    const result = normalizeNumberString(taxIncluded, decimalPlaces);
+    setExpression(result);
+    setDisplayValue(result);
     setError('');
   };
 
   const handleTaxExclude = (rate: number) => {
     if (!enableTaxCalculation) return;
-    if (!input) {
+    if (!expression) {
       setError('金額を入力してください');
       return;
     }
-    const currentValue = parseFloat(calculateExpression(input));
+    const currentValue = parseFloat(calculateExpression(expression));
     if (isNaN(currentValue)) {
       setError('有効な金額を入力してください');
       return;
     }
     const taxExcluded = currentValue / (1 + rate);
-    setInput(normalizeNumberString(taxExcluded, decimalPlaces));
+    const result = normalizeNumberString(taxExcluded, decimalPlaces);
+    setExpression(result);
+    setDisplayValue(result);
     setError('');
   };
 
@@ -198,12 +254,13 @@ export const Calculator = ({
                 )}
         <div className="calculator-display">
           <CalculatorDisplay
-            value={input}
+            value={displayValue}
             error={error}
             inputRef={inputRef}
             editable
-            onChange={(v) => setInput(v)}
+            onChange={handleDisplayChange}
             numberFormatOptions={numberFormatOptions}
+            placeholder={placeholder}
           />
         </div>
         <CalculatorKeypad

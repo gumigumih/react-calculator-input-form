@@ -40,7 +40,9 @@ export const CalculatorDisplay = ({
                 displayType="text"
                 {...numberFormatOptions} // 全オプションを展開
               />
-            ) : ''}
+            ) : (
+              <span className="text-gray-400">{placeholder ?? '0'}</span>
+            )}
           </div>
         </div>
       )}
