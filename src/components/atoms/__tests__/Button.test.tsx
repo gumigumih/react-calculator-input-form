@@ -43,4 +43,16 @@ describe('Button', () => {
     const button = screen.getByTestId('test-button');
     expect(button).toHaveAttribute('aria-label', 'Test button');
   });
+
+  it('defaults to type button', () => {
+    render(<Button>Click me</Button>);
+
+    expect(screen.getByText('Click me')).toHaveAttribute('type', 'button');
+  });
+
+  it('allows overriding the type', () => {
+    render(<Button type="submit">Click me</Button>);
+
+    expect(screen.getByText('Click me')).toHaveAttribute('type', 'submit');
+  });
 });
