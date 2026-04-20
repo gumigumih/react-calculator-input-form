@@ -24,21 +24,21 @@ export const CalculatorDisplay = ({
     <>
       {editable ? (
         <NumericFormat
+          {...numberFormatOptions} // 全オプションを展開
           className="calculator-display-input"
           value={value}
           onValueChange={(vals) => onChange?.(vals.value)}
           placeholder={placeholder ?? '数値を入力'}
           inputMode="decimal"
-          {...numberFormatOptions} // 全オプションを展開
         />
       ) : (
         <div className="calculator-display-input">
           <div ref={inputRef} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {value ? (
               <NumericFormat
+                {...numberFormatOptions} // 全オプションを展開
                 value={value}
                 displayType="text"
-                {...numberFormatOptions} // 全オプションを展開
               />
             ) : (
               <span className="text-gray-400">{placeholder ?? '0'}</span>

@@ -50,13 +50,13 @@ export const CalculatorInputForm = ({
   return (
     <>
       <NumericFormat
+        {...numberFormatOptions}
         value={value}
         onValueChange={(vals) => onChange(vals.value)}
         placeholder={placeholder}
         className={className}
         readOnly
         onClick={() => setIsOpen(true)}
-        {...numberFormatOptions}
       />
       <Calculator
         isOpen={isOpen}
