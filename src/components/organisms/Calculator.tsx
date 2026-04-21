@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import type { CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from '../atoms/Icon';
 import { CalculatorDisplay } from '../molecules/CalculatorDisplay';
@@ -6,6 +7,14 @@ import { CalculatorKeypad } from '../molecules/CalculatorKeypad';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import type { NumericFormatProps } from 'react-number-format';
 import { useCalculatorController } from './useCalculatorController';
+
+export interface CalculatorColorTheme {
+  primaryColor?: string;
+  operatorColor?: string;
+  successColor?: string;
+  dangerColor?: string;
+  surfaceColor?: string;
+}
 
 export interface CalculatorProps {
   isOpen: boolean;
@@ -19,6 +28,8 @@ export interface CalculatorProps {
   decimalPlaces?: number;
   numberFormatOptions?: Partial<NumericFormatProps>;
   placeholder?: string; // 電卓モーダル内のプレースホルダー
+  colors?: CalculatorColorTheme;
+  theme?: CalculatorColorTheme;
 }
 
 export const Calculator = ({
@@ -32,6 +43,8 @@ export const Calculator = ({
   decimalPlaces = 6,
   numberFormatOptions = {},
   placeholder,
+  colors,
+  theme,
 }: CalculatorProps) => {
   const inputRef = useRef<HTMLDivElement>(null);
   const {
@@ -88,8 +101,20 @@ export const Calculator = ({
 
   if (!isOpen || !mounted) return null;
 
+  const colorTheme = {
+    ...theme,
+    ...colors,
+  };
+  const themeStyle: CSSProperties = {
+    ...(colorTheme?.primaryColor ? ({ '--calculator-primary': colorTheme.primaryColor } as CSSProperties) : {}),
+    ...(colorTheme?.operatorColor ? ({ '--calculator-operator': colorTheme.operatorColor } as CSSProperties) : {}),
+    ...(colorTheme?.successColor ? ({ '--calculator-success': colorTheme.successColor } as CSSProperties) : {}),
+    ...(colorTheme?.dangerColor ? ({ '--calculator-danger': colorTheme.dangerColor } as CSSProperties) : {}),
+    ...(colorTheme?.surfaceColor ? ({ '--calculator-surface': colorTheme.surfaceColor } as CSSProperties) : {}),
+  };
+
   const modal = (
-    <div className="calculator-overlay">
+    <div className="calculator-overlay" style={themeStyle}>
       <div className="calculator-modal">
                 {/* Header */}
                 {title || description ? (

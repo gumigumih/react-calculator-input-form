@@ -65,7 +65,7 @@
 
 /* メインカード */
 .calculator-modal {
-  background: white;
+  background: var(--calculator-surface, white);
   border-radius: 0.75rem;
   width: 100%;
   max-width: 24rem;
@@ -94,7 +94,7 @@
 .calculator-logo {
   width: 2.5rem;
   height: 2.5rem;
-  background-color: #60a5fa;
+  background-color: var(--calculator-primary, #60a5fa);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -132,7 +132,7 @@
 }
 
 .calculator-close-button:hover {
-  background-color: #6b7280;
+  background-color: var(--calculator-danger, #6b7280);
   color: white;
 }
 
@@ -160,8 +160,8 @@
 }
 
 .calculator-participant-row.selected {
-  border-color: #3b82f6;
-  background-color: #eff6ff;
+  border-color: var(--calculator-primary, #3b82f6);
+  background-color: color-mix(in srgb, var(--calculator-primary, #3b82f6) 10%, white);
 }
 
 .calculator-participant-info {
@@ -214,7 +214,7 @@
 .calculator-add-button {
   flex: 1;
   padding: 0.5rem 1rem;
-  background-color: #3b82f6;
+  background-color: var(--calculator-primary, #3b82f6);
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -225,12 +225,12 @@
 }
 
 .calculator-add-button:hover {
-  background-color: #2563eb;
+  background-color: color-mix(in srgb, var(--calculator-primary, #3b82f6) 85%, black);
 }
 
 .calculator-remove-button {
   padding: 0.5rem 1rem;
-  background-color: #6b7280;
+  background-color: var(--calculator-danger, #6b7280);
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -241,7 +241,7 @@
 }
 
 .calculator-remove-button:hover {
-  background-color: #4b5563;
+  background-color: color-mix(in srgb, var(--calculator-danger, #6b7280) 85%, black);
 }
 
 /* 電卓キーパッド */
@@ -310,21 +310,21 @@
 }
 
 .calculator-keypad-button.operator {
-  background-color: #ff9f0a; /* iOS calculator orange */
+  background-color: var(--calculator-operator, #ff9f0a); /* iOS calculator orange */
   color: #ffffff;
 }
 
 .calculator-keypad-button.operator:hover {
-  background-color: #ffb340; /* lighter on hover */
+  background-color: color-mix(in srgb, var(--calculator-operator, #ff9f0a) 85%, white); /* lighter on hover */
 }
 
 .calculator-keypad-button.clear {
-  background-color: #ef4444;
+  background-color: var(--calculator-danger, #ef4444);
   color: white;
 }
 
 .calculator-keypad-button.clear:hover {
-  background-color: #dc2626;
+  background-color: color-mix(in srgb, var(--calculator-danger, #ef4444) 85%, black);
 }
 
 .calculator-keypad-button.backspace {
@@ -350,23 +350,23 @@
 
 /* 薄い水色基調（税込） */
 .calculator-keypad-button.include {
-  background-color: #a5f3fc; /* cyan-200 */
+  background-color: color-mix(in srgb, var(--calculator-success, #a5f3fc) 30%, white); /* cyan-200 */
   color: #374151; /* 数字ボタンと同じ文字色 */
 }
 
 .calculator-keypad-button.include:hover {
-  background-color: #67e8f9; /* cyan-300 */
+  background-color: var(--calculator-success, #67e8f9); /* cyan-300 */
 }
 
 /* 税抜=薄い桃色系（温かみのある色） */
 /* 薄い桃色基調（税抜） */
 .calculator-keypad-button.exclude {
-  background-color: #fce7f3; /* pink-200 */
+  background-color: color-mix(in srgb, var(--calculator-danger, #fce7f3) 20%, white); /* pink-200 */
   color: #374151; /* 数字ボタンと同じ文字色 */
 }
 
 .calculator-keypad-button.exclude:hover {
-  background-color: #fbcfe8; /* pink-300 */
+  background-color: color-mix(in srgb, var(--calculator-danger, #fbcfe8) 35%, white); /* pink-300 */
 }
 
 .calculator-action-buttons {
@@ -377,7 +377,7 @@
 
 .calculator-equals-button {
   padding: 0.75rem;
-  background-color: #ff9f0a; /* distinct from tax buttons, iOS-like */
+  background-color: var(--calculator-operator, #ff9f0a); /* distinct from tax buttons, iOS-like */
   color: #ffffff;
   font-size: 1rem;
   font-weight: 700;
@@ -389,12 +389,12 @@
 }
 
 .calculator-equals-button:hover {
-  background-color: #ffb340;
+  background-color: color-mix(in srgb, var(--calculator-operator, #ff9f0a) 85%, white);
 }
 
 .calculator-decide-button {
   padding: 0.75rem;
-  background-color: #10b981;
+  background-color: var(--calculator-success, #10b981);
   color: white;
   font-size: 1rem;
   font-weight: 700;
@@ -407,7 +407,7 @@
 }
 
 .calculator-decide-button:hover {
-  background-color: #059669;
+  background-color: color-mix(in srgb, var(--calculator-success, #10b981) 85%, black);
 }
 
 /* 合計と計算ボタン */
@@ -436,13 +436,13 @@
 }
 
 .calculator-per-person {
-  color: #2563eb;
+  color: var(--calculator-primary, #2563eb);
 }
 
 .calculator-calculate-button {
   width: 100%;
   padding: 1rem;
-  background-color: #10b981;
+  background-color: var(--calculator-success, #10b981);
   color: white;
   font-size: 1.125rem;
   font-weight: bold;
@@ -454,7 +454,7 @@
 }
 
 .calculator-calculate-button:hover {
-  background-color: #059669;
+  background-color: color-mix(in srgb, var(--calculator-success, #10b981) 85%, black);
 }
 
 /* レスポンシブ対応 */

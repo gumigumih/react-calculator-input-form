@@ -18,6 +18,7 @@ const [amount2, setAmount2] = useState('');
 const [amount3, setAmount3] = useState('');
 const [amount4, setAmount4] = useState('');
 const [amount5, setAmount5] = useState('');
+const [amount7, setAmount7] = useState('');
 
 return (
 <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -109,6 +110,9 @@ return (
         </a>
         <a href="#options" className="px-4 py-2 text-gray-700 hover:text-indigo-600 transition-all duration-200 text-sm font-medium">
           オプション
+        </a>
+        <a href="#colors" className="px-4 py-2 text-gray-700 hover:text-pink-600 transition-all duration-200 text-sm font-medium">
+          色指定
         </a>
       </div>
     </div>
@@ -249,6 +253,53 @@ return (
   />
 );
 }`}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* 色指定 */}
+  <section id="colors" className="mb-12">
+    <div className="max-w-5xl mx-auto bg-white/70 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-8 shadow-xl">
+      <div className="flex items-center space-x-3 mb-8">
+        <div
+          className="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center shadow-lg">
+          <FiSettings className="w-7 h-7 text-white" />
+        </div>
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">色指定</h2>
+      </div>
+      <p className="text-gray-600 mb-8">`colors` で細かく配色を変えられます。未指定時はデフォルト配色です。</p>
+
+      <div className="grid grid-cols-1 gap-8">
+        <div className="bg-white/70 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">colors 詳細指定</h3>
+          <div className="space-y-6">
+            <CalculatorInputForm
+              value={amount7}
+              onChange={setAmount7}
+              colors={{
+                primaryColor: '#7c3aed',
+                operatorColor: '#f97316',
+                successColor: '#10b981',
+                dangerColor: '#ef4444',
+                surfaceColor: '#ffffff',
+              }}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent cursor-pointer transition-all duration-200 hover:border-gray-400"
+            />
+            <div className="bg-gray-900 text-green-400 p-4 rounded-xl text-sm font-mono overflow-x-auto shadow-inner">
+              <pre>{`<CalculatorInputForm
+value={amount}
+onChange={setAmount}
+colors={{
+  primaryColor: '#7c3aed',
+  operatorColor: '#f97316',
+  successColor: '#10b981',
+  dangerColor: '#ef4444',
+  surfaceColor: '#ffffff',
+}}
+/>`}</pre>
+            </div>
           </div>
         </div>
       </div>

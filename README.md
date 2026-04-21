@@ -190,6 +190,26 @@ react-number-formatの**すべてのプロパティ**が利用可能です。詳
 | `enableTaxCalculation` | boolean | | false | 税計算機能の有効/無効 |
 | `decimalPlaces` | number | | 6 | 小数点以下の最大桁数 |
 | `numberFormatOptions` | `Partial<NumericFormatProps>` | | `{}` | 数値フォーマットの詳細設定 |
+| `colors` | object | | - | 色のカスタマイズ設定 |
+| `theme` | object | | - | `colors` の互換エイリアス |
+
+### colors
+
+```tsx
+<CalculatorInputForm
+  value={amount}
+  onChange={setAmount}
+  colors={{
+    primaryColor: '#7c3aed',
+    operatorColor: '#f97316',
+    successColor: '#10b981',
+    dangerColor: '#ef4444',
+    surfaceColor: '#ffffff',
+  }}
+/>
+```
+
+`theme` でも同じ指定ができますが、今後は `colors` を推奨します。
 
 ## 🎨 スタイル
 

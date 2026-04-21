@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NumericFormat } from 'react-number-format';
 import type { NumericFormatProps } from 'react-number-format';
-import { Calculator } from './Calculator';
+import { Calculator, type CalculatorColorTheme } from './Calculator';
 
 export interface CalculatorInputFormProps {
   value: string;
@@ -15,6 +15,8 @@ export interface CalculatorInputFormProps {
   decimalPlaces?: number;
   numberFormatOptions?: Partial<NumericFormatProps>;
   displayPlaceholder?: string; // 電卓モーダル内のプレースホルダー
+  colors?: CalculatorColorTheme;
+  theme?: CalculatorColorTheme;
 }
 
 export const CalculatorInputForm = ({
@@ -28,6 +30,8 @@ export const CalculatorInputForm = ({
   decimalPlaces = 6,
   numberFormatOptions = {},
   displayPlaceholder,
+  colors,
+  theme,
 }: CalculatorInputFormProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -70,6 +74,8 @@ export const CalculatorInputForm = ({
         decimalPlaces={decimalPlaces}
         numberFormatOptions={numberFormatOptions}
         placeholder={displayPlaceholder}
+        colors={colors}
+        theme={theme}
       />
     </>
   );
