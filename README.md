@@ -28,6 +28,8 @@
 npm install @gumigumih/react-calculator-input-form
 ```
 
+あわせて `react`, `react-dom`, `react-number-format` が必要です。
+
 ```bash
 yarn add @gumigumih/react-calculator-input-form
 ```
@@ -185,9 +187,28 @@ react-number-formatの**すべてのプロパティ**が利用可能です。詳
 | `className` | string | | - | 入力フィールドのCSSクラス |
 | `title` | string | | "金額入力" | モーダルのタイトル |
 | `description` | string | | "税込・税抜や小数計算に対応" | モーダルの説明文 |
-| `enableTaxCalculation` | boolean | | true | 税計算機能の有効/無効 |
+| `enableTaxCalculation` | boolean | | false | 税計算機能の有効/無効 |
 | `decimalPlaces` | number | | 6 | 小数点以下の最大桁数 |
-| `numberFormatOptions` | object | | {} | 数値フォーマットの詳細設定 |
+| `numberFormatOptions` | `Partial<NumericFormatProps>` | | `{}` | 数値フォーマットの詳細設定 |
+
+## 🎨 スタイル
+
+このパッケージはインポート時に自動で基本スタイルを読み込みます。個別に明示したい場合は以下も使えます。
+
+```tsx
+import '@gumigumih/react-calculator-input-form/styles';
+```
+
+## 📦 公開 API
+
+外部利用向けに公開しているのは以下です。
+
+- `CalculatorInputForm`
+- `Calculator`
+- `CalculatorDisplay`
+- `CalculatorKeypad`
+
+内部実装寄りの `Button` / `Icon` は公開していません。
 
 ## ⌨️ キーボードショートカット
 
@@ -197,6 +218,11 @@ react-number-formatの**すべてのプロパティ**が利用可能です。詳
 - `C`: クリア
 - `Backspace`: バックスペース
 - `.`: 小数点入力
+
+## 🧮 計算方式
+
+この電卓は、一般的な手元電卓と同じく左から順に計算する逐次計算方式です。  
+`1 + 2 × 3` のような式は、数学の優先順位ではなく入力順に処理されます。
 
 ## 🎨 デモ
 

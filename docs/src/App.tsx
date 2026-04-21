@@ -72,6 +72,9 @@ return (
         React専用のシンプルで使いやすい電卓入力フォームプラグイン。税込・税抜計算、小数点対応、カスタマイズ可能なオプションで、
         <span className="font-semibold text-gray-800">あらゆる金額入力シーンに対応</span>します。
       </p>
+      <p className="text-sm text-gray-500 mb-10">
+        計算は一般的な手元電卓と同じ逐次方式です。入力順に処理されます。
+      </p>
       <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
         <a href="https://github.com/gumigumih/react-calculator-input-form" target="_blank" rel="noopener noreferrer"
           className="bg-gradient-to-r from-gray-900 to-gray-700 text-white px-8 py-4 rounded-xl hover:from-gray-800 hover:to-gray-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2">
