@@ -30,4 +30,3 @@ __tests__/
 
 # その他
 .cache/
-dist/
