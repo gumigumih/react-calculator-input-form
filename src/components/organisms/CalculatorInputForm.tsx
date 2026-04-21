@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NumericFormat } from 'react-number-format';
+import type { NumericFormatProps } from 'react-number-format';
 import { Calculator } from './Calculator';
 
 export interface CalculatorInputFormProps {
@@ -12,7 +13,7 @@ export interface CalculatorInputFormProps {
   // オプション設定
   enableTaxCalculation?: boolean;
   decimalPlaces?: number;
-  numberFormatOptions?: any; // react-number-formatの全オプションを受け付け
+  numberFormatOptions?: Partial<NumericFormatProps>;
   displayPlaceholder?: string; // 電卓モーダル内のプレースホルダー
 }
 

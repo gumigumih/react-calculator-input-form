@@ -1,5 +1,6 @@
 import type { RefObject } from 'react';
 import { NumericFormat } from 'react-number-format';
+import type { NumericFormatProps } from 'react-number-format';
 
 export interface CalculatorDisplayProps {
   value: string;
@@ -8,7 +9,7 @@ export interface CalculatorDisplayProps {
   editable?: boolean;
   placeholder?: string;
   onChange?: (value: string) => void;
-  numberFormatOptions?: any; // react-number-formatの全オプションを受け付け
+  numberFormatOptions?: Partial<NumericFormatProps>;
 }
 
 export const CalculatorDisplay = ({ 
