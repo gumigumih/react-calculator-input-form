@@ -8,6 +8,8 @@ type ControllerParams = {
   onCalculate: (value: string) => void;
   enableTaxCalculation: boolean;
   decimalPlaces: number;
+  getInputValue?: () => string;
+  onOperatorInput?: () => void;
 };
 
 export function useCalculatorController({
@@ -17,6 +19,8 @@ export function useCalculatorController({
   onCalculate,
   enableTaxCalculation,
   decimalPlaces,
+  getInputValue,
+  onOperatorInput,
 }: ControllerParams) {
   const operatorButtons = ['+', '-', '×', '÷'];
   const [expression, setExpression] = useState(initialValue || '');
@@ -43,8 +47,16 @@ export function useCalculatorController({
     setDisplayValue(nextDisplayValue);
   };
 
+  const normalizeInputValue = (value: string) => {
+    return value.replace(/,/g, '').replace(/[^\d.+\-×÷*/]/g, '');
+  };
+
   const replaceLastNumber = (nextValue: string) => {
-    setExpression((prev) => prev.replace(/[\d.]+$/, nextValue));
+    setExpression((prev) => (
+      /[\d.]+$/.test(prev)
+        ? prev.replace(/[\d.]+$/, nextValue)
+        : prev + nextValue
+    ));
   };
 
   const appendDigit = (val: string) => {
@@ -81,19 +93,22 @@ export function useCalculatorController({
 
     commitExpression(nextExpression, currentResult);
     setIsWaitingForOperand(true);
+    onOperatorInput?.();
   };
 
   const handleDisplayChange = (newValue: string) => {
     setError('');
-    setDisplayValue(newValue);
     if (isWaitingForOperand) {
-      commitExpression(expression + newValue);
+      const nextOperand = displayValue && newValue.startsWith(displayValue)
+        ? newValue.slice(displayValue.length)
+        : newValue;
+      commitExpression(expression + nextOperand, nextOperand);
       setIsWaitingForOperand(false);
       return;
     }
 
-    replaceLastNumber(newValue);
     setDisplayValue(newValue);
+    replaceLastNumber(newValue);
   };
 
   const handleButtonClick = (val: string) => {
@@ -127,19 +142,21 @@ export function useCalculatorController({
   };
 
   const handleEqual = () => {
-    if (!expression) return;
-    const result = calculateExpression(expression);
+    const currentExpression = expression || normalizeInputValue(getInputValue?.() || displayValue);
+    if (!currentExpression) return;
+    const result = calculateExpression(currentExpression);
     setExpression(result);
     setDisplayValue(result);
     setIsWaitingForOperand(false);
   };
 
   const handleDecide = () => {
-    if (!expression) {
+    const currentExpression = expression || normalizeInputValue(getInputValue?.() || displayValue);
+    if (!currentExpression) {
       setError('金額を入力してください');
       return;
     }
-    const result = calculateExpression(expression);
+    const result = calculateExpression(currentExpression);
     onCalculate(result);
     onClose();
   };

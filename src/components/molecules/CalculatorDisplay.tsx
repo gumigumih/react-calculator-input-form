@@ -5,7 +5,7 @@ import type { NumericFormatProps } from 'react-number-format';
 export interface CalculatorDisplayProps {
   value: string;
   error?: string;
-  inputRef?: RefObject<HTMLDivElement>;
+  inputRef?: RefObject<globalThis.HTMLInputElement>;
   editable?: boolean;
   placeholder?: string;
   onChange?: (value: string) => void;
@@ -31,10 +31,11 @@ export const CalculatorDisplay = ({
           onValueChange={(vals) => onChange?.(vals.value)}
           placeholder={placeholder ?? '数値を入力'}
           inputMode="decimal"
+          getInputRef={inputRef}
         />
       ) : (
         <div className="calculator-display-input">
-          <div ref={inputRef} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {value ? (
               <NumericFormat
                 {...numberFormatOptions} // 全オプションを展開

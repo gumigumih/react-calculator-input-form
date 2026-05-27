@@ -46,7 +46,7 @@ export const Calculator = ({
   colors,
   theme,
 }: CalculatorProps) => {
-  const inputRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<globalThis.HTMLInputElement>(null);
   const {
     mounted,
     displayValue,
@@ -64,14 +64,24 @@ export const Calculator = ({
     onCalculate,
     enableTaxCalculation,
     decimalPlaces,
+    getInputValue: () => inputRef.current?.value || '',
+    onOperatorInput: () => globalThis.setTimeout(() => inputRef.current?.select(), 0),
   });
+
+  useEffect(() => {
+    if (!isOpen || !mounted) return;
+    inputRef.current?.focus();
+  }, [isOpen, mounted]);
 
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
       const activeElement = document.activeElement as HTMLElement | null;
-      if (activeElement && activeElement.tagName === 'INPUT') return;
+      const isCalculatorInput = activeElement?.classList.contains('calculator-display-input');
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (activeElement && activeElement.tagName === 'INPUT' && !isCalculatorInput) return;
+      if (isCalculatorInput && (e.key >= '0' && e.key <= '9' || e.key === '.' || e.key === 'Backspace')) return;
       if (e.key >= '0' && e.key <= '9') {
         handleButtonClick(e.key);
         e.preventDefault();
