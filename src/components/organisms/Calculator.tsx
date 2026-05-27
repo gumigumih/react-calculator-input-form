@@ -65,7 +65,8 @@ export const Calculator = ({
     enableTaxCalculation,
     decimalPlaces,
     getInputValue: () => inputRef.current?.value || '',
-    onOperatorInput: () => globalThis.setTimeout(() => inputRef.current?.select(), 0),
+    onOperatorInput: () =>
+      globalThis.setTimeout(() => inputRef.current?.select(), 0),
   });
 
   useEffect(() => {
@@ -78,17 +79,37 @@ export const Calculator = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
       const activeElement = document.activeElement as HTMLElement | null;
-      const isCalculatorInput = activeElement?.classList.contains('calculator-display-input');
+      const isCalculatorInput = activeElement?.classList.contains(
+        'calculator-display-input',
+      );
       if (e.ctrlKey || e.metaKey || e.altKey) return;
-      if (activeElement && activeElement.tagName === 'INPUT' && !isCalculatorInput) return;
-      if (isCalculatorInput && (e.key >= '0' && e.key <= '9' || e.key === '.' || e.key === 'Backspace')) return;
+      if (
+        activeElement &&
+        activeElement.tagName === 'INPUT' &&
+        !isCalculatorInput
+      ) {
+        return;
+      }
+      if (
+        isCalculatorInput &&
+        ((e.key >= '0' && e.key <= '9') ||
+          e.key === '.' ||
+          e.key === 'Backspace')
+      ) {
+        return;
+      }
       if (e.key >= '0' && e.key <= '9') {
         handleButtonClick(e.key);
         e.preventDefault();
       } else if (e.key === '.') {
-        handleButtonClick('.')
+        handleButtonClick('.');
         e.preventDefault();
-      } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+      } else if (
+        e.key === '+' ||
+        e.key === '-' ||
+        e.key === '*' ||
+        e.key === '/'
+      ) {
         handleButtonClick(e.key === '*' ? '×' : e.key === '/' ? '÷' : e.key);
         e.preventDefault();
       } else if (e.key === 'Backspace') {
@@ -116,35 +137,55 @@ export const Calculator = ({
     ...colors,
   };
   const themeStyle: CSSProperties = {
-    ...(colorTheme?.primaryColor ? ({ '--calculator-primary': colorTheme.primaryColor } as CSSProperties) : {}),
-    ...(colorTheme?.operatorColor ? ({ '--calculator-operator': colorTheme.operatorColor } as CSSProperties) : {}),
-    ...(colorTheme?.successColor ? ({ '--calculator-success': colorTheme.successColor } as CSSProperties) : {}),
-    ...(colorTheme?.dangerColor ? ({ '--calculator-danger': colorTheme.dangerColor } as CSSProperties) : {}),
-    ...(colorTheme?.surfaceColor ? ({ '--calculator-surface': colorTheme.surfaceColor } as CSSProperties) : {}),
+    ...(colorTheme?.primaryColor
+      ? ({ '--calculator-primary': colorTheme.primaryColor } as CSSProperties)
+      : {}),
+    ...(colorTheme?.operatorColor
+      ? ({ '--calculator-operator': colorTheme.operatorColor } as CSSProperties)
+      : {}),
+    ...(colorTheme?.successColor
+      ? ({ '--calculator-success': colorTheme.successColor } as CSSProperties)
+      : {}),
+    ...(colorTheme?.dangerColor
+      ? ({ '--calculator-danger': colorTheme.dangerColor } as CSSProperties)
+      : {}),
+    ...(colorTheme?.surfaceColor
+      ? ({ '--calculator-surface': colorTheme.surfaceColor } as CSSProperties)
+      : {}),
   };
 
   const modal = (
     <div className="calculator-overlay" style={themeStyle}>
       <div className="calculator-modal">
-                {/* Header */}
-                {title || description ? (
-                  <div className="calculator-header">
-                    <div>
-                      {title && <h2 className="calculator-title">{title}</h2>}
-                      {description && <p className="calculator-subtitle">{description}</p>}
-                    </div>
-                    <button onClick={onClose} className="calculator-close-button" aria-label="閉じる">
-                      <Icon icon={faTimes} className="w-5 h-5" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="calculator-header">
-                    <div></div>
-                    <button onClick={onClose} className="calculator-close-button" aria-label="閉じる">
-                      <Icon icon={faTimes} className="w-5 h-5" />
-                    </button>
-                  </div>
-                )}
+        {/* Header */}
+        {title || description ? (
+          <div className="calculator-header">
+            <div>
+              {title && <h2 className="calculator-title">{title}</h2>}
+              {description && (
+                <p className="calculator-subtitle">{description}</p>
+              )}
+            </div>
+            <button
+              onClick={onClose}
+              className="calculator-close-button"
+              aria-label="閉じる"
+            >
+              <Icon icon={faTimes} className="w-5 h-5" />
+            </button>
+          </div>
+        ) : (
+          <div className="calculator-header">
+            <div></div>
+            <button
+              onClick={onClose}
+              className="calculator-close-button"
+              aria-label="閉じる"
+            >
+              <Icon icon={faTimes} className="w-5 h-5" />
+            </button>
+          </div>
+        )}
         <div className="calculator-display">
           <CalculatorDisplay
             value={displayValue}
@@ -173,6 +214,6 @@ export const Calculator = ({
   if (typeof document !== 'undefined' && document.body) {
     return createPortal(modal, document.body);
   }
-  
+
   return null;
 };
