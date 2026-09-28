@@ -156,7 +156,7 @@ export const Calculator = ({
 
   const modal = (
     <div className="calculator-overlay" style={themeStyle}>
-      <div className="calculator-modal">
+      <div className="calculator-modal" role="dialog" aria-modal="true" aria-label={title || '電卓'}>
         {/* Header */}
         {title || description ? (
           <div className="calculator-header">

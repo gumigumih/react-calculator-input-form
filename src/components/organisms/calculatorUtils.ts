@@ -5,7 +5,7 @@ export function normalizeNumberString(num: number, maxFractionDigits: number = 6
   return trimmed;
 }
 
-export function calculateExpression(expr: string): string {
+export function calculateExpression(expr: string, maxFractionDigits: number = 6): string {
   try {
     const sanitized = expr.replace(/,/g, '').replace(/×/g, '*').replace(/÷/g, '/').trim();
     if (!sanitized) return '0';
@@ -94,9 +94,8 @@ export function calculateExpression(expr: string): string {
     }
 
     if (stack.length !== 1 || !isFinite(stack[0])) return '0';
-    return normalizeNumberString(stack[0]);
+    return normalizeNumberString(stack[0], maxFractionDigits);
   } catch {
     return '0';
   }
 }
-

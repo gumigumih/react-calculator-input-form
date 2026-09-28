@@ -47,6 +47,8 @@ export function useCalculatorController({
     setDisplayValue(nextDisplayValue);
   };
 
+  const getCompletedExpression = () => isWaitingForOperand ? expression.slice(0, -1) : expression;
+
   const normalizeInputValue = (value: string) => {
     return value.replace(/,/g, '').replace(/[^\d.+\-×÷*/]/g, '');
   };
@@ -71,14 +73,14 @@ export function useCalculatorController({
   };
 
   const appendDecimal = () => {
-    if (displayValue.includes('.')) return;
-
-    const nextDisplayValue = displayValue ? `${displayValue}.` : '0.';
     if (isWaitingForOperand) {
-      commitExpression(expression + nextDisplayValue, nextDisplayValue);
+      commitExpression(expression + '0.', '0.');
       setIsWaitingForOperand(false);
       return;
     }
+
+    if (displayValue.includes('.')) return;
+    const nextDisplayValue = displayValue ? `${displayValue}.` : '0.';
 
     replaceLastNumber(nextDisplayValue);
     setDisplayValue(nextDisplayValue);
@@ -86,7 +88,7 @@ export function useCalculatorController({
 
   const appendOperator = (val: string) => {
     if (!expression) return;
-    const currentResult = calculateExpression(expression);
+    const currentResult = calculateExpression(getCompletedExpression(), decimalPlaces);
     const nextExpression = /[+\-×÷]$/.test(expression)
       ? expression.slice(0, -1) + val
       : `${currentResult}${val}`;
@@ -121,6 +123,11 @@ export function useCalculatorController({
     }
 
     if (val === '←') {
+      if (isWaitingForOperand) {
+        commitExpression(expression.slice(0, -1));
+        setIsWaitingForOperand(false);
+        return;
+      }
       if (displayValue.length === 0) return;
       const nextDisplayValue = displayValue.slice(0, -1);
       setDisplayValue(nextDisplayValue);
@@ -142,32 +149,33 @@ export function useCalculatorController({
   };
 
   const handleEqual = () => {
-    const currentExpression = expression || normalizeInputValue(getInputValue?.() || displayValue);
+    const currentExpression = getCompletedExpression() || normalizeInputValue(getInputValue?.() || displayValue);
     if (!currentExpression) return;
-    const result = calculateExpression(currentExpression);
+    const result = calculateExpression(currentExpression, decimalPlaces);
     setExpression(result);
     setDisplayValue(result);
     setIsWaitingForOperand(false);
   };
 
   const handleDecide = () => {
-    const currentExpression = expression || normalizeInputValue(getInputValue?.() || displayValue);
+    const currentExpression = getCompletedExpression() || normalizeInputValue(getInputValue?.() || displayValue);
     if (!currentExpression) {
       setError('金額を入力してください');
       return;
     }
-    const result = calculateExpression(currentExpression);
+    const result = calculateExpression(currentExpression, decimalPlaces);
     onCalculate(result);
     onClose();
   };
 
   const updateTaxValue = (compute: (value: number, rate: number) => number, rate: number) => {
     if (!enableTaxCalculation) return;
-    if (!expression) {
+    const currentExpression = getCompletedExpression();
+    if (!currentExpression) {
       setError('金額を入力してください');
       return;
     }
-    const currentValue = parseFloat(calculateExpression(expression));
+    const currentValue = parseFloat(calculateExpression(currentExpression, decimalPlaces));
     if (isNaN(currentValue)) {
       setError('有効な金額を入力してください');
       return;
@@ -175,6 +183,7 @@ export function useCalculatorController({
     const result = normalizeNumberString(compute(currentValue, rate), decimalPlaces);
     setExpression(result);
     setDisplayValue(result);
+    setIsWaitingForOperand(false);
     setError('');
   };
 

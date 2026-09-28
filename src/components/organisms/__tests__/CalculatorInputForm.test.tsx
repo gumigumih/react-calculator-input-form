@@ -49,6 +49,19 @@ describe('CalculatorInputForm', () => {
     expect(screen.getByTestId('calculator-modal')).toBeInTheDocument();
   });
 
+  it('opens the calculator with Enter or Space', () => {
+    render(<CalculatorInputForm {...defaultProps} />);
+
+    const input = screen.getByPlaceholderText('クリックして金額を入力');
+    input.focus();
+    fireEvent.keyDown(input, { key: 'Enter' });
+    expect(screen.getByTestId('calculator-modal')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Close'));
+    fireEvent.keyDown(input, { key: ' ' });
+    expect(screen.getByTestId('calculator-modal')).toBeInTheDocument();
+  });
+
   it('calls onChange when calculator returns value', () => {
     render(<CalculatorInputForm {...defaultProps} />);
     

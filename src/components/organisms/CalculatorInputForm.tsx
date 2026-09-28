@@ -61,7 +61,18 @@ export const CalculatorInputForm = ({
         placeholder={placeholder}
         className={className}
         readOnly
+        role="button"
+        aria-label={placeholder}
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
         onClick={() => setIsOpen(true)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            event.stopPropagation();
+            setIsOpen(true);
+          }
+        }}
       />
       <Calculator
         isOpen={isOpen}
