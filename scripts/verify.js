@@ -1,4 +1,5 @@
 import { execSync } from 'child_process';
+import { createRequire } from 'module';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -6,6 +7,7 @@ import { fileURLToPath } from 'url';
 // ESモジュールでの__dirname相当
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const require = createRequire(import.meta.url);
 
 // パッケージ情報を取得
 const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8'));
@@ -59,6 +61,10 @@ function main() {
   switch (command) {
     case 'dist':
       verifyDirectory('dist', 'dist');
+      if (typeof require(packageJson.name).CalculatorInputForm !== 'function') {
+        console.error('CommonJS package entry does not export CalculatorInputForm.');
+        process.exit(1);
+      }
       break;
     case 'docs-dist':
       verifyDirectory('docs/dist', 'docs/dist');
